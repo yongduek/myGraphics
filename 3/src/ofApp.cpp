@@ -1,5 +1,6 @@
 #include "ofApp.h"
 #include "myGL.h"
+#include <glm/gtx/string_cast.hpp>
 
 
 myCanvas canvas;
@@ -25,29 +26,17 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
-    canvas.drawPixel (100, 400, 255, 255, 0);
+    canvas.Clear();
     canvas.drawPixel (100, 401, 255, 255, 0);
     
     static int cnt=0;
-//    if (cnt++ < 100)
-        {
-        //drawLine (random()%width, random()%height, random()%width, random()%height);
-    
-//        drawTriangleFill (random()%width, random()%height,
-//                          random()%width, random()%height,
-//                          random()%width, random()%height,
-//                          randomColor(), randomColor(), randomColor());
-        
-        //    canvas.drawPixel (100, 400, 255, 255, 0);
-//        canvas.drawCircle(random()%500, random()%600, 30 + random()%300, canvas.randomColor());
-        canvas.drawCircleFilled(random()%1000, random()%700, 30 + random()%300,
-                         canvas.randomColor(), 3 + random()%10);
-        
-        }
 
-    canvas.setWorldWindow (-2.5, 2.5, -0.5, 1.4);
-    canvas.setViewport(0, canvas.width, canvas.height, 0);
+//    canvas.drawCircleFilled(random()%1000, random()%700, 30 + random()%300,
+//                         canvas.randomColor(), 3 + random()%10);
+    
+
+    canvas.setWorldWindow (-1.9, 1.9, -1.9, 1.9);
+    canvas.setViewport(0, canvas.height, canvas.height, 0);
 
     vector<mPointf> xaxis;
     vector<mColor> xaxisColor;
@@ -55,8 +44,7 @@ void ofApp::update(){
     xaxis.push_back ( mPointf(2.2, 0) );
     xaxisColor.push_back (mColor(255,255,200));
     xaxisColor.push_back (mColor(255,255,200));
-    
-    canvas.draw(myLINE_STRIP, &xaxis[0], xaxisColor);
+    canvas.draw(myLINE_STRIP, xaxis, xaxisColor);
 
     vector<mPointf> vert;
     vector<mColor> vertColor;
@@ -66,7 +54,21 @@ void ofApp::update(){
         vertColor.push_back (mColor(255,0,0));
     }
     canvas.draw(myLINE_STRIP, vert, vertColor);
-
+    
+    
+    vector<mPointf> tri;
+    tri.push_back(mPointf(0,0));
+    tri.push_back(mPointf(1,0));
+    tri.push_back(mPointf(1,1));
+    canvas.enableFilledDraw();
+    static float angle = 0;
+    angle += DEG2RAD(1);
+    glm::mat4 X=glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.f,0.f,1.f));
+    cerr << "rotation angle=" << angle << endl;
+    cerr << "R=" << glm::to_string (X) << endl;
+    canvas.setModelingMatrix(X);
+    canvas.draw(myTRIANGLES, tri, mColor(255,255,0));
+    canvas.disableFilledDraw();
 }
 
 //--------------------------------------------------------------
