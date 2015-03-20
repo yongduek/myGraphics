@@ -63,6 +63,7 @@ void ofApp::update(){
     canvas.enableFilledDraw();
     static float angle = 0;
     angle += DEG2RAD(1);
+//    float angle = glutGet(GLUT_ELAPSED_TIME) / 1000.0 * 45;  // 45° per second
     glm::mat4 X=glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.f,0.f,1.f));
     cerr << "rotation angle=" << angle << endl;
     cerr << "R=" << glm::to_string (X) << endl;
